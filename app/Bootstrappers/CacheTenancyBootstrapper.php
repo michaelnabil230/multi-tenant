@@ -2,11 +2,11 @@
 
 namespace App\Bootstrappers;
 
+use App\CacheManager as TenantCacheManager;
+use App\Models\Tenant;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Cache;
-use App\CacheManager as TenantCacheManager;
-use App\Models\Tenant;
 
 class CacheTenancyBootstrapper 
 {

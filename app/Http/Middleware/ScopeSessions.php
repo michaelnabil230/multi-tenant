@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\TenancyNotInitializedException;
 use Closure;
 use Illuminate\Http\Request;
-use App\Exceptions\TenancyNotInitializedException;
 
 class ScopeSessions
 {
@@ -12,11 +12,11 @@ class ScopeSessions
 
     public function handle(Request $request, Closure $next)
     {
-        if (!tenancy()->initialized) {
+        if (! tenancy()->initialized) {
             throw new TenancyNotInitializedException('Tenancy needs to be initialized before the session scoping middleware is executed');
         }
 
-        if (!$request->session()->has(static::$tenantIdKey)) {
+        if (! $request->session()->has(static::$tenantIdKey)) {
             $request->session()->put(static::$tenantIdKey, tenant()->getTenantKey());
         } else {
             if ($request->session()->get(static::$tenantIdKey) !== tenant()->getTenantKey()) {

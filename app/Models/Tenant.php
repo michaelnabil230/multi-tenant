@@ -3,8 +3,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuids;
+use Illuminate\Database\Eloquent\Model;
 
 class Tenant extends Model
 {
@@ -41,7 +41,7 @@ class Tenant extends Model
 
     public function createDomain($data): Domain
     {
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             $data = ['domain' => $data];
         }
 

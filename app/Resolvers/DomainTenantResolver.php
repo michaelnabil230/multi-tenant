@@ -3,10 +3,10 @@
 
 namespace App\Resolvers;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 use App\Models\Domain;
 use App\Models\Tenant;
-use App\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
+use Illuminate\Database\Eloquent\Builder;
 
 class DomainTenantResolver extends Contracts\CachedTenantResolver
 {

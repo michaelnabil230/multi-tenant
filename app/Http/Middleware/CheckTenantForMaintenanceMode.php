@@ -2,17 +2,17 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use App\Exceptions\TenancyNotInitializedException;
+use Closure;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Symfony\Component\HttpFoundation\IpUtils;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckTenantForMaintenanceMode extends CheckForMaintenanceMode
 {
     public function handle($request, Closure $next)
     {
-        if (!tenant()) {
+        if (! tenant()) {
             throw new TenancyNotInitializedException;
         }
 

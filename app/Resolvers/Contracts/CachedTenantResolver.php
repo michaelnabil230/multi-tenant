@@ -3,9 +3,9 @@
 
 namespace App\Resolvers\Contracts;
 
+use App\Models\Tenant;
 use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Contracts\Cache\Repository;
-use App\Models\Tenant;
 
 abstract class CachedTenantResolver
 {
@@ -28,7 +28,7 @@ abstract class CachedTenantResolver
 
     public function resolve(...$args): Tenant
     {
-        if (!static::$shouldCache) {
+        if (! static::$shouldCache) {
             return $this->resolveWithoutCache(...$args);
         }
 
@@ -50,7 +50,7 @@ abstract class CachedTenantResolver
 
     public function invalidateCache(Tenant $tenant): void
     {
-        if (!static::$shouldCache) {
+        if (! static::$shouldCache) {
             return;
         }
 

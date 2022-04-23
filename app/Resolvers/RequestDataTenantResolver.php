@@ -3,8 +3,8 @@
 
 namespace App\Resolvers;
 
-use App\Models\Tenant;
 use App\Exceptions\TenantCouldNotBeIdentifiedByRequestDataException;
+use App\Models\Tenant;
 
 class RequestDataTenantResolver extends Contracts\CachedTenantResolver
 {

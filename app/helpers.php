@@ -3,7 +3,7 @@
 use App\Models\Tenant;
 use App\Tenancy;
 
-if (!function_exists('tenancy')) {
+if (! function_exists('tenancy')) {
     /** @return Tenancy */
     function tenancy()
     {
@@ -11,7 +11,7 @@ if (!function_exists('tenancy')) {
     }
 }
 
-if (!function_exists('tenant')) {
+if (! function_exists('tenant')) {
     /**
      * Get a key from the current tenant's storage.
      *
@@ -20,7 +20,7 @@ if (!function_exists('tenant')) {
      */
     function tenant($key = null)
     {
-        if (!app()->bound(Tenant::class)) {
+        if (! app()->bound(Tenant::class)) {
             return;
         }
 

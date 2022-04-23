@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Resolvers\DomainTenantResolver;
 use App\Tenancy;
+use Closure;
 
 class InitializeTenancyByDomain extends IdentificationMiddleware
 {

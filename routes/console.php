@@ -2,9 +2,9 @@
 
 use App\Models\Domain;
 use App\Models\Tenant;
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +52,7 @@ Artisan::command('create:tenant {name} {plan}', function ($name, $plan) {
 
     if ($isExists) {
         $this->error("Domain $premiumDomain already exists");
+
         return;
     }
 

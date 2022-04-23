@@ -2,24 +2,24 @@
 
 namespace App\Providers;
 
-use App\Tenancy;
+use App\Events;
+use App\Http\Middleware\MiddlewareT\InitializeTenancyByDomain;
+use App\Http\Middleware\MiddlewareT\InitializeTenancyByDomainOrSubdomain;
+use App\Http\Middleware\MiddlewareT\InitializeTenancyByPath;
+use App\Http\Middleware\MiddlewareT\InitializeTenancyByRequestData;
+use App\Http\Middleware\MiddlewareT\InitializeTenancyBySubdomain;
+use App\Http\Middleware\MiddlewareT\PreventAccessFromCentralDomains;
+use App\Listeners;
 use App\Models\Domain;
 use App\Models\Tenant;
-use Laravel\Telescope\Telescope;
+use App\Resolvers\DomainTenantResolver;
+use App\Tenancy;
 use Illuminate\Cache\CacheManager;
-use Laravel\Telescope\IncomingEntry;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use App\Resolvers\DomainTenantResolver;
 use Illuminate\Support\ServiceProvider;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByPath;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByDomain;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyBySubdomain;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByRequestData;
-use App\Http\Middleware\MiddlewareT\PreventAccessFromCentralDomains;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByDomainOrSubdomain;
-use App\Events;
-use App\Listeners;
+use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\Telescope;
 
 class TenancyServiceProvider extends ServiceProvider
 {
@@ -111,14 +111,14 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function telescope()
     {
-        if (!class_exists(Telescope::class)) {
+        if (! class_exists(Telescope::class)) {
             return;
         }
 
         Telescope::tag(function (IncomingEntry $entry) {
             $tags = [];
 
-            if (!request()->route()) {
+            if (! request()->route()) {
                 return $tags;
             }
 

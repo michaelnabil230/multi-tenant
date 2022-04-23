@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\NotASubdomainException;
 use Closure;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
-use App\Exceptions\NotASubdomainException;
 
 class InitializeTenancyBySubdomain extends InitializeTenancyByDomain
 {
@@ -64,7 +64,7 @@ class InitializeTenancyBySubdomain extends InitializeTenancyByDomain
         // If we're on localhost or an IP address, then we're not visiting a subdomain.
         $isACentralDomain = in_array($hostname, config('tenancy.central_domains'), true);
         $notADomain = $isLocalhost || $isIpAddress;
-        $thirdPartyDomain = !Str::endsWith($hostname, config('tenancy.central_domains'));
+        $thirdPartyDomain = ! Str::endsWith($hostname, config('tenancy.central_domains'));
 
         if ($isACentralDomain || $notADomain || $thirdPartyDomain) {
             return new NotASubdomainException($hostname);

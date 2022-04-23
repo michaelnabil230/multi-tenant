@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use App\Exceptions\RouteIsMissingTenantParameterException;
 use App\Resolvers\PathTenantResolver;
 use App\Tenancy;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 
 class InitializeTenancyByPath extends IdentificationMiddleware
 {

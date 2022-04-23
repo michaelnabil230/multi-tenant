@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Events\TenancyBootstrapped;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Schema\Blueprint;
 
 class AppServiceProvider extends ServiceProvider
 {

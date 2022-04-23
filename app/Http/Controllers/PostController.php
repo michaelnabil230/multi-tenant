@@ -7,19 +7,17 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-
     public function index()
     {
         $posts = Post::with('comments')->latest()->paginate(10);
+
         return view('posts.index', compact('posts'));
     }
-
 
     public function create()
     {
         return view('posts.create');
     }
-
 
     public function store(Request $request)
     {

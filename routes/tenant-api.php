@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\InitializeTenancyByDomain;
 use App\Http\Middleware\PreventAccessFromCentralDomains;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

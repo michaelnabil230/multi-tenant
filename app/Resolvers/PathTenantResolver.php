@@ -3,9 +3,9 @@
 
 namespace App\Resolvers;
 
-use Illuminate\Routing\Route;
-use App\Models\Tenant;
 use App\Exceptions\TenantCouldNotBeIdentifiedByPathException;
+use App\Models\Tenant;
+use Illuminate\Routing\Route;
 
 class PathTenantResolver extends Contracts\CachedTenantResolver
 {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Stancl\Tenancy\Contracts\TenantResolver;
 use App\Tenancy;
+use Stancl\Tenancy\Contracts\TenantResolver;
 
 abstract class IdentificationMiddleware
 {

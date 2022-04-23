@@ -8,7 +8,7 @@ class Domain extends Model
 {
     protected $fillable = [
         'domain',
-        'tenant_id'
+        'tenant_id',
     ];
 
     /**

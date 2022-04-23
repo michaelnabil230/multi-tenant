@@ -2,16 +2,16 @@
 
 namespace App\Scopes;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use App\Traits\BelongsToTenant;
 
 class TenantScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        if (!tenancy()->initialized) {
+        if (! tenancy()->initialized) {
             return;
         }
 

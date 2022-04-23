@@ -2,8 +2,8 @@
 
 namespace App\Events\Contracts;
 
-use Illuminate\Queue\SerializesModels;
 use App\Models\Tenant;
+use Illuminate\Queue\SerializesModels;
 
 abstract class TenantEvent
 {

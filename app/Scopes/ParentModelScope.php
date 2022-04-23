@@ -10,7 +10,7 @@ class ParentModelScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        if (!tenancy()->initialized) {
+        if (! tenancy()->initialized) {
             return;
         }
 

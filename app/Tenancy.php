@@ -2,11 +2,11 @@
 
 namespace App;
 
+use App\Exceptions\TenantCouldNotBeIdentifiedById;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
-use App\Models\Tenant;
-use App\Exceptions\TenantCouldNotBeIdentifiedById;
 
 class Tenancy
 {
@@ -28,11 +28,11 @@ class Tenancy
      */
     public function initialize($tenant): void
     {
-        if (!is_object($tenant)) {
+        if (! is_object($tenant)) {
             $tenantId = $tenant;
             $tenant = $this->find($tenantId);
 
-            if (!$tenant) {
+            if (! $tenant) {
                 throw new TenantCouldNotBeIdentifiedById($tenantId);
             }
         }
@@ -59,7 +59,7 @@ class Tenancy
     {
         event(new Events\EndingTenancy($this));
 
-        if (!$this->initialized) {
+        if (! $this->initialized) {
             return;
         }
 
@@ -147,7 +147,7 @@ class Tenancy
         $originalTenant = $this->tenant;
 
         foreach ($tenants as $tenant) {
-            if (!$tenant instanceof Tenant) {
+            if (! $tenant instanceof Tenant) {
                 $tenant = $this->find($tenant);
             }
 
