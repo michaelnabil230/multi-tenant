@@ -14,7 +14,6 @@ class TenantScope implements Scope
         if (! tenancy()->initialized) {
             return;
         }
-
         $builder->where($model->qualifyColumn(BelongsToTenant::$tenantIdColumn), tenant()->getTenantKey());
     }
 

@@ -3,23 +3,15 @@
 namespace App\Providers;
 
 use App\Events;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByDomain;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByDomainOrSubdomain;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByPath;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyByRequestData;
-use App\Http\Middleware\MiddlewareT\InitializeTenancyBySubdomain;
-use App\Http\Middleware\MiddlewareT\PreventAccessFromCentralDomains;
+use App\Tenancy;
 use App\Listeners;
+use App\CacheManager;
 use App\Models\Domain;
 use App\Models\Tenant;
-use App\Resolvers\DomainTenantResolver;
-use App\Tenancy;
-use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Telescope\IncomingEntry;
-use Laravel\Telescope\Telescope;
+use App\Http\Middleware;
 
 class TenancyServiceProvider extends ServiceProvider
 {
@@ -63,10 +55,19 @@ class TenancyServiceProvider extends ServiceProvider
         ];
     }
 
-    public function register()
+    public function register(): void
     {
         // Make sure Tenancy is stateful.
         $this->app->singleton(Tenancy::class);
+
+        // Make sure features are bootstrapped as soon as Tenancy is instantiated.
+        $this->app->extend(Tenancy::class, function (Tenancy $tenancy) {
+            foreach ($this->app['config']['tenancy.features'] ?? [] as $feature) {
+                $this->app[$feature]->bootstrap($tenancy);
+            }
+
+            return $tenancy;
+        });
 
         // Make it possible to inject the current tenant by typehinting the Tenant contract.
         $this->app->bind(Tenant::class, function ($app) {
@@ -94,10 +95,8 @@ class TenancyServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootEvents();
-        $this->mapRoutes();
-        $this->telescope();
-
         $this->makeTenancyMiddlewareHighestPriority();
+        $this->mapRoutes();
     }
 
     protected function bootEvents()
@@ -107,29 +106,6 @@ class TenancyServiceProvider extends ServiceProvider
                 Event::listen($event, $listener);
             }
         }
-    }
-
-    protected function telescope()
-    {
-        if (! class_exists(Telescope::class)) {
-            return;
-        }
-
-        Telescope::tag(function (IncomingEntry $entry) {
-            $tags = [];
-
-            if (! request()->route()) {
-                return $tags;
-            }
-
-            if (tenancy()->initialized) {
-                $tags = [
-                    'tenant:' . tenant('id'),
-                ];
-            }
-
-            return $tags;
-        });
     }
 
     protected function mapRoutes()
@@ -142,13 +118,12 @@ class TenancyServiceProvider extends ServiceProvider
     {
         $tenancyMiddleware = [
             // Even higher priority than the initialization middleware
-            PreventAccessFromCentralDomains::class,
-
-            InitializeTenancyByDomain::class,
-            InitializeTenancyBySubdomain::class,
-            InitializeTenancyByDomainOrSubdomain::class,
-            InitializeTenancyByPath::class,
-            InitializeTenancyByRequestData::class,
+            Middleware\PreventAccessFromCentralDomains::class,
+            Middleware\InitializeTenancyByDomain::class,
+            Middleware\InitializeTenancyBySubdomain::class,
+            Middleware\InitializeTenancyByDomainOrSubdomain::class,
+            Middleware\InitializeTenancyByPath::class,
+            Middleware\InitializeTenancyByRequestData::class,
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {

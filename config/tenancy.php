@@ -23,6 +23,11 @@ return [
         App\Bootstrappers\CacheTenancyBootstrapper::class,
     ],
 
+
+    'features' => [
+        // App\Features\TelescopeTags::class,
+    ],
+
     /**
      * Cache tenancy config. Used by CacheTenancyBootstrapper.
      *
