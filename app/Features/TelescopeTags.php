@@ -3,22 +3,22 @@
 
 namespace App\Features;
 
+use App\Tenancy;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
-use App\Tenancy;
 
 class TelescopeTags implements Feature
 {
     public function bootstrap(Tenancy $tenancy): void
     {
-        if (!class_exists(Telescope::class)) {
+        if (! class_exists(Telescope::class)) {
             return;
         }
 
         Telescope::tag(function (IncomingEntry $entry) {
             $tags = [];
 
-            if (!request()->route()) {
+            if (! request()->route()) {
                 return $tags;
             }
 

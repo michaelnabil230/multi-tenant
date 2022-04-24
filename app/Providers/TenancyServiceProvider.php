@@ -2,16 +2,16 @@
 
 namespace App\Providers;
 
-use App\Events;
-use App\Tenancy;
-use App\Listeners;
 use App\CacheManager;
+use App\Events;
+use App\Http\Middleware;
+use App\Listeners;
 use App\Models\Domain;
 use App\Models\Tenant;
+use App\Tenancy;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use App\Http\Middleware;
 
 class TenancyServiceProvider extends ServiceProvider
 {

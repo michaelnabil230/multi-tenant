@@ -10,6 +10,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('comments')->latest()->paginate();
+
         return view('posts.index', compact('posts'));
     }
 
@@ -48,12 +49,14 @@ class PostController extends Controller
         ]);
 
         $post->update($validated);
+
         return to_route('posts.index');
     }
 
     public function destroy(Post $post)
     {
         $post->delete();
+
         return to_route('posts.index');
     }
 }

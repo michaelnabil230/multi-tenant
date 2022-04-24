@@ -2,12 +2,11 @@
 
 namespace App;
 
+use App\Exceptions\TenantCouldNotBeIdentifiedById;
 use App\Models\Tenant;
-use App\TenancyBootstrapper;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Database\Eloquent\Builder;
-use App\Exceptions\TenantCouldNotBeIdentifiedById;
 
 class Tenancy
 {
@@ -92,6 +91,7 @@ class Tenancy
     public function model()
     {
         $class = config('tenancy.tenant_model');
+
         return new $class;
     }
 
