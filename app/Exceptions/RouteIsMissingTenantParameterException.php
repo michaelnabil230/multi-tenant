@@ -3,8 +3,8 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use App\Resolvers\PathTenantResolver;
+use Exception;
 
 class RouteIsMissingTenantParameterException extends Exception
 {
