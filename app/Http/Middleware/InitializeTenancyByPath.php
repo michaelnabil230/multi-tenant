@@ -14,8 +14,7 @@ class InitializeTenancyByPath extends IdentificationMiddleware
     /** @var callable|null */
     public static $onFail;
 
-    /** @var Tenancy */
-    protected $tenancy;
+    protected Tenancy $tenancy;
 
     /** @var PathTenantResolver */
     protected $resolver;

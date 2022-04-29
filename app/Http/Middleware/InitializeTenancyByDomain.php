@@ -11,10 +11,8 @@ class InitializeTenancyByDomain extends IdentificationMiddleware
     /** @var callable|null */
     public static $onFail;
 
-    /** @var Tenancy */
-    protected $tenancy;
+    protected Tenancy $tenancy;
 
-    /** @var DomainTenantResolver */
     protected $resolver;
 
     public function __construct(Tenancy $tenancy, DomainTenantResolver $resolver)

@@ -3,17 +3,14 @@
 namespace App\Http\Middleware;
 
 use App\Tenancy;
-use Stancl\Tenancy\Contracts\TenantResolver;
 
 abstract class IdentificationMiddleware
 {
     /** @var callable */
     public static $onFail;
 
-    /** @var Tenancy */
-    protected $tenancy;
+    protected Tenancy $tenancy;
 
-    /** @var TenantResolver */
     protected $resolver;
 
     public function initializeTenancy($request, $next, ...$resolverArguments)

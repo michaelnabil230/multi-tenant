@@ -20,12 +20,12 @@ return [
      * To configure their behavior, see the config keys below.
      */
     'bootstrappers' => [
-        App\Bootstrappers\CacheTenancyBootstrapper::class,
+        // App\Bootstrappers\CacheTenancyBootstrapper::class,
     ],
 
 
     'features' => [
-        // App\Features\TelescopeTags::class,
+        App\Features\TelescopeTags::class,
     ],
 
     /**

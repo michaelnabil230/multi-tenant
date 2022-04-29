@@ -8,6 +8,7 @@ use App\Http\Middleware;
 use App\Listeners;
 use App\Models\Domain;
 use App\Models\Tenant;
+use App\Resolvers\DomainTenantResolver;
 use App\Tenancy;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;

@@ -15,21 +15,27 @@ class CacheManager extends BaseCacheManager
      */
     public function __call($method, $parameters)
     {
-        $tags = [config('tenancy.cache.tag_base') . tenant()->getTenantKey()];
-        
-        if ($method === 'tags') {
-            $count = count($parameters);
-            
-            if ($count !== 1) {
-                throw new \Exception("Method tags() takes exactly 1 argument. $count passed.");
-            }
+        $prefix = config('cache.prefix') . '_' . tenant()->getTenantKey();
+        dd($prefix);
+        config([
+            'cache.prefix' => $prefix,
+        ]);
 
-            $names = $parameters[0];
-            $names = (array) $names; // cache()->tags('foo') https://laravel.com/docs/5.7/cache#removing-tagged-cache-items
+        // dd($prefix);
+        // if ($method === 'tags') {
+        //     $count = count($parameters);
 
-            return $this->store()->tags(array_merge($tags, $names));
-        }
+        //     if ($count !== 1) {
+        //         throw new \Exception("Method tags() takes exactly 1 argument. $count passed.");
+        //     }
 
-        return $this->store()->tags($tags)->$method(...$parameters);
+        //     $names = $parameters[0];
+        //     $names = (array) $names; // cache()->tags('foo') https://laravel.com/docs/5.7/cache#removing-tagged-cache-items
+
+        //     // dd(array_merge($tags, $names));
+        //     return $this->store()->tags(array_merge($tags, $names));
+        // }
+
+        return $this->store()->$method(...$parameters);
     }
 }

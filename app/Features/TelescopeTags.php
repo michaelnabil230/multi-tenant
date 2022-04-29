@@ -3,13 +3,12 @@
 
 namespace App\Features;
 
-use App\Tenancy;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 
 class TelescopeTags implements Feature
 {
-    public function bootstrap(Tenancy $tenancy): void
+    public function bootstrap(): void
     {
         if (! class_exists(Telescope::class)) {
             return;
@@ -24,7 +23,7 @@ class TelescopeTags implements Feature
 
             if (tenancy()->initialized) {
                 $tags = [
-                    'tenant:' . tenant('id'),
+                    'tenant:' . tenant()->getTenantKey(),
                 ];
             }
 

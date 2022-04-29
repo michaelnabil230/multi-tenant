@@ -6,8 +6,7 @@ use App\Tenancy;
 
 abstract class TenancyEvent
 {
-    /** @var Tenancy */
-    public $tenancy;
+    public Tenancy $tenancy;
 
     public function __construct(Tenancy $tenancy)
     {

@@ -31,6 +31,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
+            // $prefix = config('cache.prefix') . '_' . tenant()->getTenantKey();
+            // config([
+            //     'cache.prefix' => $prefix,
+            // ]);
+            // app('cache')->forgetDriver(config('cache.default'));
             // PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
             // DatabaseSettingStore::$cacheKey = 'setting.cache.tenant.' . $event->tenancy->tenant->id;
         });

@@ -15,9 +15,6 @@ class Tenancy
     /** @var Tenant|Model|null */
     public $tenant;
 
-    /** @var callable|null */
-    public $getBootstrappersUsing = null;
-
     /** @var bool */
     public $initialized = false;
 
@@ -41,7 +38,6 @@ class Tenancy
             return;
         }
 
-        // TODO: Remove this (so that runForMultiple() is still performant) and make the FS bootstrapper work either way
         if ($this->initialized) {
             $this->end();
         }
@@ -74,7 +70,7 @@ class Tenancy
     public function getBootstrappers(): array
     {
         // If no callback for getting bootstrappers is set, we just return all of them.
-        $resolve = $this->getBootstrappersUsing ?? function (Tenant $tenant) {
+        $resolve = function (Tenant $tenant) {
             return config('tenancy.bootstrappers');
         };
 
@@ -90,77 +86,11 @@ class Tenancy
     /** @return Tenant|Model */
     public function model()
     {
-        $class = config('tenancy.tenant_model');
-
-        return new $class;
+        return new Tenant();
     }
 
     public function find($id): ?Tenant
     {
         return $this->model()->where($this->model()->getTenantKeyName(), $id)->first();
-    }
-
-    /**
-     * Run a callback in the central context.
-     * Atomic, safely reverts to previous context.
-     *
-     * @param callable $callback
-     * @return mixed
-     */
-    public function central(callable $callback)
-    {
-        $previousTenant = $this->tenant;
-
-        $this->end();
-
-        // This callback will usually not accept arguments, but the previous
-        // Tenant is the only value that can be useful here, so we pass that.
-        $result = $callback($previousTenant);
-
-        if ($previousTenant) {
-            $this->initialize($previousTenant);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Run a callback for multiple tenants.
-     * More performant than running $tenant->run() one by one.
-     *
-     * @param Tenant[]|\Traversable|string[]|null $tenants
-     * @param callable $callback
-     * @return void
-     */
-    public function runForMultiple($tenants, callable $callback)
-    {
-        // Convert null to all tenants
-        $tenants = is_null($tenants) ? $this->model()->cursor() : $tenants;
-
-        // Convert incrementing int ids to strings
-        $tenants = is_int($tenants) ? (string) $tenants : $tenants;
-
-        // Wrap string in array
-        $tenants = is_string($tenants) ? [$tenants] : $tenants;
-
-        // Use all tenants if $tenants is false
-        $tenants = $tenants ?: $this->model()->cursor();
-
-        $originalTenant = $this->tenant;
-
-        foreach ($tenants as $tenant) {
-            if (! $tenant instanceof Tenant) {
-                $tenant = $this->find($tenant);
-            }
-
-            $this->initialize($tenant);
-            $callback($tenant);
-        }
-
-        if ($originalTenant) {
-            $this->initialize($originalTenant);
-        } else {
-            $this->end();
-        }
     }
 }
